@@ -7,6 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { city: "Tehran", result: { degree: 12 } };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -17,6 +18,10 @@ class App extends Component {
     this.setState({
       [name]: e.target.value
     });
+  }
+  handleSubmit(event) {
+    event.preventDefault();
+    this.calcWeather();
   }
 
   handleClick(e) {
@@ -32,9 +37,13 @@ class App extends Component {
       )
       .then(res => {
 
-        this.setState({ result: { degree: res.data.main.temp } });
+        this.setState({ result: { degree: res.data.main.temp + " C" } });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        // alert("No city found");
+        this.setState({result: { degree: "No city found" }});
+
+        });
   }
 
   render() {
@@ -45,20 +54,31 @@ class App extends Component {
           <h1 className="App-title">Weather APP</h1>
         </header>
 
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <p className="App-intro">
             <input
               value={this.state.city}
               onChange={this.handleChange.bind(this, "city")}
               type="text"
             />
+            {
+              this.state.city &&
             <button type="button" onClick={this.handleClick.bind(this, "city")}>
               Show{" "}
             </button>
+            }
+            {
+              this.state.city &&
+            <button type="button" 
+            onClick={()=>this.setState({city:''})}>
+              Clear
+            </button>
+            }
           </p>
         </form>
-
-        <p className="App-intro">{this.state.result.degree} C</p>
+        { this.state.city &&
+        <p className="App-intro">{this.state.result.degree}</p>
+        }
       </div>
     );
   }
