@@ -40,7 +40,6 @@ class App extends Component {
         this.setState({ result: { degree: res.data.main.temp + " C" } });
       })
       .catch(err => {
-        // alert("No city found");
         this.setState({result: { degree: "No city found" }});
 
         });
@@ -53,7 +52,6 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Weather APP</h1>
         </header>
-
         <form onSubmit={this.handleSubmit}>
           <p className="App-intro">
             <input
